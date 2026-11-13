@@ -357,7 +357,7 @@ function VoterLogin() {
   $('#app').innerHTML = `
     <div class="v-login">
       <div style="display:flex;flex-direction:column;gap:6px">
-        <span class="muted" style="font-size:14px">國立臺北大學三峽校區學生議會</span>
+        <span class="muted" style="font-size:14px">國立臺灣師範大學附屬高級中學學生議會</span>
         <h1>議會表決系統</h1>
       </div>
       <form id="f" style="display:flex;flex-direction:column;gap:16px">
@@ -686,7 +686,7 @@ function Screen() {
 
   function render() {
     const v = data.vote;
-    const org = `<span class="org">國立臺北大學三峽校區學生議會 · ${esc(data.meeting)}</span>`;
+    const org = `<span class="org">國立臺灣師範大學附屬高級中學學生議會 · ${esc(data.meeting)}</span>`;
     if (!v) {
       $('#meta').innerHTML = org;
       $('#title').textContent = '目前沒有進行中的表決';
