@@ -267,7 +267,7 @@ function Voter() {
           <p class="v-hint" id="hint" role="status"></p>
           <div class="v-foot"><span>門檻：${esc(v.rule)}</span><span class="num" id="cnt"></span></div>`;
         main.querySelectorAll('.v-opt').forEach(b => b.onclick = () => {
-          if (confirmed() || sending) return;
+          if (sending) return;
           selected = b.dataset.k; hintErr = ''; update();
         });
         $('#confirm').onclick = submit;
@@ -304,26 +304,26 @@ function Voter() {
     if (!v) return;
     const L = labelsFor(v.kind);
     const done = confirmed();
-    const shown = done || selected;
     const ended = v.status !== 'voting' || leftSec(v.endsAt) === 0;
+    const shown = ended ? (done || selected) : (selected || done);
+    const changed = !!selected && selected !== done;
     main.querySelectorAll('.v-opt').forEach(b => {
       b.setAttribute('aria-pressed', String(b.dataset.k === shown));
-      b.disabled = !!done || sending || ended;
+      b.disabled = sending || ended;
     });
     const cf = $('#confirm');
     if (cf) {
-      cf.classList.toggle('hidden', !!done);
-      cf.disabled = !selected || sending || ended;
-      cf.textContent = sending ? '送出中…' : selected ? `確認送出「${L[selected]}」` : '確認送出';
+      cf.disabled = !changed || sending || ended;
+      cf.textContent = sending ? '送出中…' : changed ? (done ? `更改為「${L[selected]}」` : `確認送出「${L[selected]}」`) : (done ? '已送出' : '確認送出');
     }
     const hint = $('#hint');
     if (hint) {
       hint.style.color = hintErr ? 'var(--no)' : '';
       hint.textContent = hintErr
-        || (done ? `已送出：${L[done]}。投票已完成，無法更改。`
-          : ended ? '表決時間已到。'
-          : selected ? `你選擇了「${L[selected]}」，請按「確認送出」。送出後無法更改。`
-          : '請選擇一個選項，再按「確認送出」。送出後無法更改。');
+        || (ended ? (done ? `表決時間已到。你的投票：${L[done]}。` : '表決時間已到。')
+          : changed ? (done ? `你想改為「${L[selected]}」，請按「更改為「${L[selected]}」」。` : `你選擇了「${L[selected]}」，請按「確認送出」。`)
+          : done ? `已送出：${L[done]}。截止前可重新選擇並更改，以最後一次送出為準。`
+          : '請選擇一個選項，再按「確認送出」。截止前仍可更改。');
     }
     const cnt = $('#cnt');
     if (cnt) cnt.textContent = `已投 ${v.voted} / 出席 ${v.eligibleCount}`;
@@ -333,13 +333,13 @@ function Voter() {
 
   async function submit() {
     const v = data.vote;
-    if (!selected || sending || confirmed()) return;
+    if (!selected || sending || selected === confirmed()) return;
     sending = true; hintErr = ''; update();
     try {
       const r = await api('vote', { token, choice: selected });
       if (r.relogin) { store.set('vote_token', null); return route(); }
       if (r.myChoice) { v.myChoice = r.myChoice; store.set('vote_choice_' + v.id, r.myChoice); }
-      if (!r.ok) hintErr = r.error;
+      if (!r.ok) hintErr = r.error; else selected = null;
     } catch (e) { hintErr = '網路連線失敗，請再按一次「確認送出」'; }
     sending = false; update();
   }
