@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0E1726">
-<title>議會表決系統｜國立臺灣師範大學附屬高級中學學生議會</title>
+<title>學生議會表決系統｜國立臺灣師範大學附屬高級中學學生議會</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <style>
 :root{
   --ink:#0E1726; --muted:#556178; --line:#DDE3EC; --soft:#EEF1F6; --bg:#F4F6FA; --field:#C8D1DE;
-  --yes:#2563EB; --no:#C2410C; --abs:#5B6475; --none:#0E1726; --away:#B4BCC9;
+  --yes:#347A52; --no:#BD5249; --abs:#A37800; --none:#0E1726; --away:#B4BCC9;
   --brand:#1D4ED8; --tie:#6D28D9; --ok-bg:#DCFCE7; --ok-ink:#166534;
 }
 *{box-sizing:border-box}
@@ -358,7 +358,7 @@ function VoterLogin() {
     <div class="v-login">
       <div style="display:flex;flex-direction:column;gap:6px">
         <span class="muted" style="font-size:14px">國立臺灣師範大學附屬高級中學學生議會</span>
-        <h1>議會表決系統</h1>
+        <h1>學生議會表決系統</h1>
       </div>
       <form id="f" style="display:flex;flex-direction:column;gap:16px">
         <label class="field">帳號<input name="account" autocomplete="username" autocapitalize="none" required></label>
@@ -389,7 +389,7 @@ function Admin() {
   app.innerHTML = `
     <header class="topbar"><div class="wrap a-bar">
       <div class="row" style="gap:14px;align-items:baseline">
-        <span style="font-size:20px;font-weight:900">議會表決系統</span>
+        <span style="font-size:20px;font-weight:900">學生議會表決系統</span>
         <span style="font-size:15px;color:#A9B6CC">秘書處控制台 · <span id="meeting"></span></span>
       </div>
       <div class="row">
@@ -624,7 +624,7 @@ function AdminLogin() {
   $('#app').innerHTML = `
     <div class="v-login">
       <div style="display:flex;flex-direction:column;gap:6px">
-        <span class="muted" style="font-size:14px">議會表決系統</span>
+        <span class="muted" style="font-size:14px">學生議會表決系統</span>
         <h1>秘書處登入</h1>
       </div>
       <form id="f" style="display:flex;flex-direction:column;gap:16px">
