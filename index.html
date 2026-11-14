@@ -238,7 +238,7 @@ function Voter() {
 
   function render() {
     const v = data.vote;
-    $('#me').textContent = `${data.me.district} · ${data.me.name}`;
+    $('#me').textContent = `${data.me.cls} · ${data.me.name}`;
     const st = $('#status');
     st.className = 'v-status' + (data.present ? '' : ' warn');
     st.innerHTML = data.present ? `${CHECK_SM}已簽到 · ${esc(data.meeting)}` : '目前未簽到，請洽議會秘書處';
@@ -446,7 +446,7 @@ function Admin() {
     $('#members').innerHTML = data.members.map(m => `
       <div class="m-row">
         <span class="m-dot ${m.present ? 'on' : ''}"></span>
-        <span class="m-dist">${esc(m.district)}</span>
+        <span class="m-dist">${esc(m.cls)}</span>
         <span class="m-name">${esc(m.name)}${m.online ? '<br><span class="m-online">已登入</span>' : ''}</span>
         <button class="btn sm" data-acct="${esc(m.account)}" data-p="${m.present ? 0 : 1}">${m.present ? '設為離席' : '手動簽到'}</button>
       </div>`).join('');
@@ -570,7 +570,7 @@ function Admin() {
     let s = `${v.billId ? v.billId + ' ' : ''}${v.title}：${v.named ? '記名' : '不記名'}表決，出席 ${t.eligible} 人，${L.yes} ${t.yes} 票、${L.no} ${t.no} 票${v.kind === '人事案' ? '' : `、棄權 ${t.abs} 票`}，未投票 ${t.notVoted} 人；依${v.rule}，表決結果：${v.result.text}${v.result.tone === 'tie' ? '，由主席裁決' : ''}。`;
     if (v.named && v.tiles) {
       const g = {};
-      v.tiles.forEach(x => { if (x.s !== 'away') (g[x.s] = g[x.s] || []).push(x.district + x.name); });
+      v.tiles.forEach(x => { if (x.s !== 'away') (g[x.s] = g[x.s] || []).push(x.cls); });
       const lines = keysFor(v.kind).concat(['none']).filter(k => g[k]).map(k => `${k === 'none' ? '未投票' : L[k]}：${g[k].join('、')}`);
       if (lines.length) s += '\n' + lines.join('\n');
     }
@@ -681,7 +681,7 @@ function Screen() {
     const tileH = (37 - (rows - 1) * gap) / rows;
     const nf = Math.min(3, tileW * 0.2, tileH * 0.45);
     return `<div class="s-grid" style="grid-template-columns:repeat(${cols},minmax(0,1fr));--g:${gap};--nf:${nf.toFixed(2)}">${list.map(t => `
-      <div class="s-tile"><span class="n" style="color:${colorOf(t)}">${esc(t.name)}</span></div>`).join('')}</div>`;
+      <div class="s-tile"><span class="n" style="color:${colorOf(t)}">${esc(t.cls)}</span></div>`).join('')}</div>`;
   }
 
   function render() {
